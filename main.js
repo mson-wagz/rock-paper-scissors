@@ -7,11 +7,10 @@ const startGame = document.getElementById("start-el");
 const rockGame = document.getElementById("rock-el");
 const paperGame = document.getElementById("paper-el");
 const scissorsGame = document.getElementById("scissors-el");
-const movesLeft = document.querySelector('.moves-left');
-const result = document.querySelector('.turn');
+let movesLeft = document.querySelector('.moves-left');
+const result = document.querySelector('.result');
 const playerScoreBoard = document.querySelector('.p-count');
 const computerScoreBoard = document.querySelector('.c-count');
-const chooseMove = document.querySelector('.move');
 const restartBtn = document.getElementById("restart-el");
 
 // Initialize scores
@@ -25,12 +24,18 @@ function startNewGame() {
     playerScore = 0;
     computerScore = 0;
     moves = MAX_MOVES;
-    movesLeft.textContent = `Moves Left: ${moves}`;
+    movesLeft.textContent = `Moves Remaining: ${moves}`;
+
+    // Reset UI elements
+    result.textContent = '';
     playerScoreBoard.textContent = `Player Score: ${playerScore}`;
     computerScoreBoard.textContent = `Computer Score: ${computerScore}`;
-    result.textContent = "Choose your move!";
-    chooseMove.style.display = "block";
-    restartBtn.style.display = "none";
+    restartBtn.style.display = 'none';
+    
+    // Add event listeners to game elements
+    rockGame.addEventListener('click', playGame);
+    paperGame.addEventListener('click', playGame);
+    scissorsGame.addEventListener('click', playGame);
 }
 
 // Function to start playing the game
@@ -45,7 +50,7 @@ function playGame(event) {
 
     // Check if game is over
     moves--;
-    movesLeft.textContent = `Moves Left: ${moves}`;
+    movesLeft.textContent = `Moves Remaining: ${moves}`;
     if (moves <= 0) {
         gameOver();
     }
@@ -82,41 +87,10 @@ function updateScores(winnerResult) {
 
 // Function to display result
 function displayResult(winnerResult, playerChoice, computerChoice) {
-    const resultText = winnerResult === 'player'? 'You Win!' :
-                       winnerResult === 'computer'? 'You Lose!' :
+    const resultText = winnerResult === 'player' ? 'You Win!' :
+                       winnerResult === 'computer' ? 'You Lose!' :
                        'It\'s a Tie!';
-    result.textContent = `${resultText} (Player: ${playerChoice}, Computer: ${computerChoice})`;
-    playerScoreBoard.textContent = `Player Score: ${playerScore}`;
-    computerScoreBoard.textContent = `Computer Score: ${computerScore}`;
+   
+resultParagraph.textContent = `${resultText} (${playerChoice} vs ${computerChoice})`;
 }
 
-// Function to run when game is over
-function gameOver() {
-    rockGame.removeEventListener('click', playGame);
-    paperGame.removeEventListener('click', playGame);
-    scissorsGame.removeEventListener('click', playGame);
-
-    chooseMove.innerText = 'Game Over!!';
-
-    if (playerScore > computerScore) {
-        result.style.fontSize = '2rem';
-        result.innerText = 'You Won The Game';
-        result.style.color = '#308D46';
-    } else if (playerScore < computerScore) {
-        result.style.fontSize = '2rem';
-        result.innerText = 'You Lost The Game';
-        result.style.color = 'red';
-    } else {
-        result.style.fontSize = '2rem';
-        result.innerText = 'It\'s a Tie';
-        result.style.color = 'grey';
-    }
-    restartBtn.innerText = 'Restart';
-    restartBtn.style.display = 'flex';
-    restartBtn.addEventListener('click', () => {
-        window.location.reload();
-    });
-}
-
-startGame.addEventListener('click', startNewGame);
-startNewGame();
