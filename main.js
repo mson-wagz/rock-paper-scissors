@@ -1,9 +1,9 @@
-//Define constants
+// Define constants
 const MAX_MOVES = 10;
-const COMPUTER_CHOICES = ['rock', 'paper', 'scissors']
+const COMPUTER_CHOICES = ['rock', 'paper', 'scissors'];
 
-//Get elements
-const startGame =document.getElementById("start-el");
+// Get elements
+const startGame = document.getElementById("start-el");
 const rockGame = document.getElementById("rock-el");
 const paperGame = document.getElementById("paper-el");
 const scissorsGame = document.getElementById("scissors-el");
@@ -11,171 +11,112 @@ const movesLeft = document.querySelector('.moves-left');
 const result = document.querySelector('.turn');
 const playerScoreBoard = document.querySelector('.p-count');
 const computerScoreBoard = document.querySelector('.c-count');
+const chooseMove = document.querySelector('.move');
+const restartBtn = document.getElementById("restart-el");
 
-//initialize scores
-    let playerScore = 0;
-    let computerScore = 0;
-    let moves = 0;
+// Initialize scores
+let playerScore = 0;
+let computerScore = 0;
+let moves = MAX_MOVES;
 
-
-
-//function to start a new game
-function startNewGame(){
-    //Reset scores and moves
+// Function to start a new game
+function startNewGame() {
+    // Reset scores and moves
     playerScore = 0;
     computerScore = 0;
-    moves = 0;
-
-//Add eventlisteners to game elements
-const gameElements = [rockGame,paperGame,scissorsGame].forEach((element) =>{
-    element.addEventListener('click', playGame);
-
-});
-startGame.addEventListener('click', startNewGame);
-}
-
-//function to start playing the game
-function playGame(event){
-    const playerChoice = event.target.innerText.toLowerCase();
-    const computerChoice = getComputerChoice();
-    const winnerResult = determineWinner(playerChoice,computerChoice);
-
-
-//update scores and display result
-updateScores(winnerResult);
-displayResult(winnerResult,playerChoice,computerChoice)
-
-//check if game is over
-moves++;
-if (moves >= MAX_MOVES) {
-    gameOver();
-  }
-}
-//function to get computer choices
-function getComputerChoice(){
-    return COMPUTER_CHOICES[Math.floor(Math.random() *3)]
-}
-//checking who wins
-winner(this.innerText, computerChoice)
-
-  
-//function to decide who wins
-function determineWinner(playerChoice,computerChoice){
-    const winner = (player,computer) =>{
-
-    if (player === computer) {
-        result.textContent = 'Tie'
-    }
-    else if (player == 'rock') {
-        if (computer == 'paper') {
-            result.textContent = 'Computer Won';
-            computerScore++;
-            computerScoreBoard.textContent = computerScore;
-
-        } else {
-            result.textContent = 'Player Won'
-            playerScore++;
-            playerScoreBoard.textContent = playerScore;
-        }
-    }
-    else if (player == 'scissors') {
-        if (computer == 'rock') {
-            result.textContent = 'Computer Won';
-            computerScore++;
-            computerScoreBoard.textContent = computerScore;
-        } else {
-            result.textContent = 'Player Won';
-            playerScore++;
-            playerScoreBoard.textContent = playerScore;
-        }
-    }
-    else if (player == 'paper') {
-        if (computer == 'scissors') {
-            result.textContent = 'Computer Won';
-            computerScore++;
-            computerScoreBoard.textContent = computerScore;
-        } else {
-            result.textContent = 'Player Won';
-            playerScore++;
-            playerScoreBoard.textContent = playerScore;
-        }
-    }
-      
-    }
-}
-// Function to update the result
-function updateResult(result) {
-    if (result === 'tie') {
-      result.textContent = 'Tie';
-    } else if (result === 'player') {
-      result.textContent = 'Player Won';
-      playerScore++;
-      playerScoreBoard.textContent = playerScore;
-    } else if (result === 'computer') {
-      result.textContent = 'Computer Won';
-      computerScore++;
-      computerScoreBoard.textContent = computerScore;
-    }
-  }
-  
-    
-    // Function to update scores
-    function updateScores(winnerResult) {
-      if (winnerResult === 'player') {
-        playerScore++;
-      } else if (winnerResult === 'computer') {
-        computerScore++;
-      }
-    }
-//function to display result
-function displayResult(winnerResult, playerChoice, computerChoice) {
-    const resultText = winnerResult === 'player' ? 'You Win!' : winnerResult === 'computer' ? 'You Lose!' : 'It\'s a Tie!';
-    result.textContent = resultText;
+    moves = MAX_MOVES;
+    movesLeft.textContent = `Moves Left: ${moves}`;
     playerScoreBoard.textContent = `Player Score: ${playerScore}`;
     computerScoreBoard.textContent = `Computer Score: ${computerScore}`;
-  }
-//function to run when game is over
+    result.textContent = "Choose your move!";
+    chooseMove.style.display = "block";
+    restartBtn.style.display = "none";
+}
+
+// Function to start playing the game
+function playGame(event) {
+    const playerChoice = event.target.id.split('-')[0]; // Get the choice from the element ID
+    const computerChoice = getComputerChoice();
+    const winnerResult = determineWinner(playerChoice, computerChoice);
+
+    // Update scores and display result
+    updateScores(winnerResult);
+    displayResult(winnerResult, playerChoice, computerChoice);
+
+    // Check if game is over
+    moves--;
+    movesLeft.textContent = `Moves Left: ${moves}`;
+    if (moves <= 0) {
+        gameOver();
+    }
+}
+
+// Function to get computer choices
+function getComputerChoice() {
+    return COMPUTER_CHOICES[Math.floor(Math.random() * 3)];
+}
+
+// Function to decide who wins
+function determineWinner(playerChoice, computerChoice) {
+    if (playerChoice === computerChoice) {
+        return 'tie';
+    } else if (
+        (playerChoice === 'rock' && computerChoice === 'scissors') ||
+        (playerChoice === 'scissors' && computerChoice === 'paper') ||
+        (playerChoice === 'paper' && computerChoice === 'rock')
+    ) {
+        return 'player';
+    } else {
+        return 'computer';
+    }
+}
+
+// Function to update scores
+function updateScores(winnerResult) {
+    if (winnerResult === 'player') {
+        playerScore++;
+    } else if (winnerResult === 'computer') {
+        computerScore++;
+    }
+}
+
+// Function to display result
+function displayResult(winnerResult, playerChoice, computerChoice) {
+    const resultText = winnerResult === 'player'? 'You Win!' :
+                       winnerResult === 'computer'? 'You Lose!' :
+                       'It\'s a Tie!';
+    result.textContent = `${resultText} (Player: ${playerChoice}, Computer: ${computerChoice})`;
+    playerScoreBoard.textContent = `Player Score: ${playerScore}`;
+    computerScoreBoard.textContent = `Computer Score: ${computerScore}`;
+}
+
+// Function to run when game is over
 function gameOver() {
-    const chooseMove = document.querySelector('.move');
-    const restartBtn = document.getElementById("restart-el")
-    chooseMove.innerText = 'Game Over!!'
-    movesLeft.style.display = 'none';
+    rockGame.removeEventListener('click', playGame);
+    paperGame.removeEventListener('click', playGame);
+    scissorsGame.removeEventListener('click', playGame);
+
+    chooseMove.innerText = 'Game Over!!';
 
     if (playerScore > computerScore) {
         result.style.fontSize = '2rem';
-        result.innerText = 'You Won The Game'
+        result.innerText = 'You Won The Game';
         result.style.color = '#308D46';
-    }
-    else if (playerScore < computerScore) {
+    } else if (playerScore < computerScore) {
         result.style.fontSize = '2rem';
         result.innerText = 'You Lost The Game';
         result.style.color = 'red';
-    }
-    else {
+    } else {
         result.style.fontSize = '2rem';
-        result.innerText = 'Tie';
-        result.style.color = 'grey'
+        result.innerText = 'It\'s a Tie';
+        result.style.color = 'grey';
     }
     restartBtn.innerText = 'Restart';
-    restartBtn.style.display = 'flex'
+    restartBtn.style.display = 'flex';
     restartBtn.addEventListener('click', () => {
         window.location.reload();
     });
 }
 
-
-
-
+startGame.addEventListener('click', startNewGame);
 startNewGame();
-
-
-
-
-
-
-
-
-
-
-
-
