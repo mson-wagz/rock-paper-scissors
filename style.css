@@ -11,6 +11,8 @@ h1{
     font-size: 3rem;
     margin: 0;
     padding: 0;
+    font-style: italic;
+    
 }
 .game{
     box-sizing: border-box;
@@ -31,6 +33,7 @@ h1{
     font-size: 30px;
 }
 button{
+    transform: translateY(100px);
     background-color: blueviolet;
     color: burlywood;
     padding:5px 30px;
@@ -47,4 +50,244 @@ h2{
 .moves{
     font-size: 1.5rem;
     color: blanchedalmond;
+}
+ 
+/*spinningwheel */
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	outline: none;
+}
+
+body {
+	font-family: "Open Sans";
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	overflow: hidden;
+	background: rgb(60, 60, 242);
+	background: linear-gradient(90deg, rgba(60, 60, 242, 1) 0%, rgba(98, 245, 230, 1) 52%, rgba(60, 60, 242, 1) 100%);
+	background-size: cover;
+}
+
+.mainbox {
+	position: relative;
+	width: 500px;
+	height: 500px;
+}
+
+.mainbox:after {
+	position: absolute;
+	content: '';
+	width: 32px;
+	height: 32px;
+	background: url('arrow-left.png') no-repeat;
+	background-size: 32px;
+	right: -30px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.box {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	font-weight: bold;
+	border-radius: 50%;
+	border: 10px solid #fff;
+	overflow: hidden;
+	transition: all ease 5s;
+}
+
+.box1, .box2 {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	transform-origin: 50% 50%;
+}
+
+.box1 {
+	clip-path: polygon(0 92%, 100% 50%, 0 8%);
+	background-color: #fffb00;
+	transform: rotate(185deg);
+}
+
+.box2 {
+    
+	clip-path: polygon(100% 92%, 0 50%, 100% 8%);
+	background-color: #ff4fa1;
+	transform: rotate(-135deg);
+}
+
+.box1 .span1,
+.box1 .span2,
+.box1 .span3 {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 2em;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	font-weight: 600;
+}
+
+.box1 .span1 {
+	width: 100%;
+	text-align: center;
+	top: 35%;
+}
+
+.box1 .span2 {
+	top: 50%;
+	left: 35%;
+}
+
+.box1 .span3 {
+	top: 65%;
+	left: 35%;
+}
+
+.spin {
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 10px 20px;
+	background: #fff;
+	color: #000;
+	border-radius: 20px;
+	cursor: pointer;
+	font-size: 1.2em;
+	font-weight: 600;
+	border: none;
+	outline: none;
+	transition: all ease 0.3s;
+}
+
+.spin:hover {
+	background: #000;
+	color: #fff;
+}
+
+#result {
+    transform: translateY(70px);
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 10px 20px;
+	background: #000;
+	color: #fff;
+	border-radius: 20px;
+	font-size: 1.2em;
+	font-weight: 600;
+	display: none;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.mainbox {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+}
+
+.circle {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    transform: rotate(-120deg);
+}
+ /*addiings*/
+
+ /* style.css */
+@import url("https://fonts.googleapis.com/css?family=Croissant One&effect=fire");
+
+body {
+    background-image: url(download.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Croissant One, sans-serif;
+}
+
+.game {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainbox {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+}
+
+.circle {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    transform: rotate(-120deg);
+}
+
+.segment {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    transform-origin: 100% 50%;
+    clip-path: circle(120%, 120%, 120%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.segment:nth-child(1) { background-color: #ff6666; transform: rotate(0deg); }
+.segment:nth-child(2) { background-color: #66ff66; transform: rotate(120deg); }
+.segment:nth-child(3) { background-color: #6666ff; transform: rotate(-120deg); }
+
+.spin {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: blueviolet;
+    color: burlywood;
+    border-radius: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 1.5em;
+    display: none;
+    color: blanchedalmond;
+}
+
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    justify-items: center;
+    align-items: center;
 }
