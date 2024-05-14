@@ -12,19 +12,26 @@ const result = document.querySelector('.result');
 const playerScoreBoard = document.querySelector('.p-count');
 const computerScoreBoard = document.querySelector('.c-count');
 const restartBtn = document.getElementById("restart-el");
-
+const winningMessage = document.querySelector(".winning-message");
+const winningMessageText = document.querySelector("[data-winning-message-text]");
 // Initialize scores
 let playerScore = 0;
 let computerScore = 0;
 let moves = MAX_MOVES;
+let gameActive = false;
 
 // Function to start a new game
 function startNewGame() {
     // Reset scores and moves
-    playerScore = 0;
-    computerScore = 0;
+    //gameActive = true;
     moves = MAX_MOVES;
     movesLeft.textContent = `Moves Remaining: ${moves}`;
+    winningMessage.classList.remove("show");
+    playerScore= 0;
+    computerScore= 0;
+    playerScoreBoard.textContent = `Player Score: ${playerScore}`;
+    computerScoreBoard.textContent = `Computer Score: ${computerScore}`;
+
 
 //Add eventlisteners to game elements
 const gameElements = [rockGame,paperGame,scissorsGame].forEach((element) =>{
@@ -36,12 +43,13 @@ startGame.addEventListener('click', startNewGame);
 
 //function to start playing the game
 function playGame(event){
-    const playerChoice = event.target.innerText.toLowerCase();
+    gameActive = true;
+    const playerChoice = event.target.id.split('-')[0]//innerText.toLowerCase();
     const computerChoice = getComputerChoice();
     const winnerResult = determineWinner(playerChoice,computerChoice);
 
     const movesLeft = document.querySelector('.moves-left');
-                movesLeft.innerText = `Moves Left: ${10 - moves}`;
+            movesLeft.innerText = `Moves Left: ${10 - moves}`;
 
 
 //update scores and display result
@@ -49,17 +57,15 @@ updateScores(winnerResult);
 displayResult(winnerResult,playerChoice,computerChoice)
 
 //check if game is over
-moves++;
-if (moves >= MAX_MOVES) {
-    gameOver();
-  }
+// moves++;
+// if (moves >= MAX_MOVES) {
+//     gameOver();
+//   }
 }
 //function to get computer choices
 function getComputerChoice(){
     return COMPUTER_CHOICES[Math.floor(Math.random() *3)]
 }
-// //checking who wins
-// winner(this.innerText, getComputerChoice)
 
   
 //function to decide who wins
@@ -77,51 +83,6 @@ function determineWinner(playerChoice,computerChoice){
       }
     }
     
-//     const winner = (player,computer) =>{
-
-//     if (player === computer) {
-//         return 'Tie'
-//     }
-//     else if (player == 'rock') {
-//         if (computer == 'paper') {
-//             return 'Computer Won';
-
-//         } else {
-//             return 'Player Won'
-//         }
-//     }
-//     else if (player == 'scissors') {
-//         if (computer == 'rock') {
-//             return 'Computer Won';
-//         } else {
-//             return 'Player Won';
-//         }
-//     }
-//     else if (player == 'paper') {
-//         if (computer == 'scissors') {
-//             return 'Computer Won';
-//         } else {
-//             return 'Player Won';
-//         }
-//     }
-      
-// };
-
-// Function to update the result
-// function updateResult(result) {
-//     if (result === 'tie') {
-//       result.textContent = 'Tie';
-//     } else if (result === 'player') {
-//       result.textContent = 'Player Won';
-//       playerScore++;
-//       playerScoreBoard.textContent = playerScore;
-//     } else if (result === 'computer') {
-//       result.textContent = 'Computer Won';
-//       computerScore++;
-//       computerScoreBoard.textContent = computerScore;
-//     }
-//   }
-  
     
     // Function to update scores
     function updateScores(winnerResult) {
@@ -137,33 +98,59 @@ function displayResult(winnerResult, playerChoice) {
     result.textContent = resultText;
     playerScoreBoard.textContent = `Player Score: ${playerScore}`;
     computerScoreBoard.textContent = `Computer Score: ${computerScore}`;
-    restartBtn.style.display = 'none';
+    //restartBtn.style.display = 'none';
     
     // Add event listeners to game elements
-    rockGame.addEventListener('click', playGame);
-    paperGame.addEventListener('click', playGame);
-    scissorsGame.addEventListener('click', playGame);
+//     rockGame.addEventListener('click', playGame);
+//     paperGame.addEventListener('click', playGame);
+//     scissorsGame.addEventListener('click', playGame);
+// }
+
+// // Function to start playing the game
+// function playGame(event) {
+//     const playerChoice = event.target.id.split('-')[0]; // Get the choice from the element ID
+//     const computerChoice = getComputerChoice();
+//     const winnerResult = determineWinner(playerChoice, computerChoice);
+
+//     // Update scores and display result
+//     updateScores(winnerResult);
+//     displayResult(winnerResult, playerChoice, computerChoice);
+// Display the winning or draw message
+function showWinningMessage(message) {
+    winningMessageText.textContent = message;
+    winningMessage.classList.add("show");
+    gameActive = false;
 }
 
-// Function to start playing the game
-function playGame(event) {
-    const playerChoice = event.target.id.split('-')[0]; // Get the choice from the element ID
-    const computerChoice = getComputerChoice();
-    const winnerResult = determineWinner(playerChoice, computerChoice);
-
-    // Update scores and display result
-    updateScores(winnerResult);
-    displayResult(winnerResult, playerChoice, computerChoice);
-
-    // Check if game is over
+   // Check if game is over
     
-    movesLeft.textContent = `Moves Remaining: ${moves}`;
+movesLeft.textContent = `Moves Remaining: ${moves}`;
     moves--;
     if (moves <= 0) {
         gameOver();
+
+function compareScores(playerScore,computerScore) {
+    if ( playerScore > computerScore) {
+         showWinningMessage("You win, Kudos!");
+    } else if (playerScore< computerScore) {
+        showWinningMessage("Nobody said it will be easy,try again!");
+    } else {
+        showWinningMessage("What a match!Its a draw");
+          }
+        }
+        compareScores(playerScore,computerScore)
+    }
+    
+        function gameOver(){
+        playerScore = 0;
+        computerScore = 0;
+        moves = MAX_MOVES
+        playerScoreBoard.textContent = `Player Score: ${playerScore}`;
+        computerScoreBoard.textContent = `Computer Score: ${computerScore}`;
+
     }
 }
-
+restartBtn.addEventListener("click", startNewGame);
 
 startNewGame();
 
