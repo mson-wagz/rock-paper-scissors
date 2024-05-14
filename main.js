@@ -26,8 +26,115 @@ function startNewGame() {
     moves = MAX_MOVES;
     movesLeft.textContent = `Moves Remaining: ${moves}`;
 
-    // Reset UI elements
-    result.textContent = '';
+//Add eventlisteners to game elements
+const gameElements = [rockGame,paperGame,scissorsGame].forEach((element) =>{
+    element.addEventListener('click',playGame);
+
+});
+startGame.addEventListener('click', startNewGame);
+}
+
+//function to start playing the game
+function playGame(event){
+    const playerChoice = event.target.innerText.toLowerCase();
+    const computerChoice = getComputerChoice();
+    const winnerResult = determineWinner(playerChoice,computerChoice);
+
+    const movesLeft = document.querySelector('.moves-left');
+                movesLeft.innerText = `Moves Left: ${10 - moves}`;
+
+
+//update scores and display result
+updateScores(winnerResult);
+displayResult(winnerResult,playerChoice,computerChoice)
+
+//check if game is over
+moves++;
+if (moves >= MAX_MOVES) {
+    gameOver();
+  }
+}
+//function to get computer choices
+function getComputerChoice(){
+    return COMPUTER_CHOICES[Math.floor(Math.random() *3)]
+}
+// //checking who wins
+// winner(this.innerText, getComputerChoice)
+
+  
+//function to decide who wins
+function determineWinner(playerChoice,computerChoice){
+    if (playerChoice === computerChoice) {
+        return 'tie';
+      } else if (playerChoice === 'rock' && computerChoice === 'scissors') {
+        return 'player';
+      } else if (playerChoice === 'paper' && computerChoice === 'rock') {
+        return 'player';
+      } else if (playerChoice === 'scissors' && computerChoice === 'paper') {
+        return 'player';
+      } else {
+        return 'computer';
+      }
+    }
+    
+//     const winner = (player,computer) =>{
+
+//     if (player === computer) {
+//         return 'Tie'
+//     }
+//     else if (player == 'rock') {
+//         if (computer == 'paper') {
+//             return 'Computer Won';
+
+//         } else {
+//             return 'Player Won'
+//         }
+//     }
+//     else if (player == 'scissors') {
+//         if (computer == 'rock') {
+//             return 'Computer Won';
+//         } else {
+//             return 'Player Won';
+//         }
+//     }
+//     else if (player == 'paper') {
+//         if (computer == 'scissors') {
+//             return 'Computer Won';
+//         } else {
+//             return 'Player Won';
+//         }
+//     }
+      
+// };
+
+// Function to update the result
+// function updateResult(result) {
+//     if (result === 'tie') {
+//       result.textContent = 'Tie';
+//     } else if (result === 'player') {
+//       result.textContent = 'Player Won';
+//       playerScore++;
+//       playerScoreBoard.textContent = playerScore;
+//     } else if (result === 'computer') {
+//       result.textContent = 'Computer Won';
+//       computerScore++;
+//       computerScoreBoard.textContent = computerScore;
+//     }
+//   }
+  
+    
+    // Function to update scores
+    function updateScores(winnerResult) {
+      if (winnerResult === 'player') {
+        playerScore++;
+      } else if (winnerResult === 'computer') {
+        computerScore++;
+      }
+    }
+//function to display result
+function displayResult(winnerResult, playerChoice) {
+    const resultText = winnerResult === 'player' ? 'You Win!' : winnerResult === 'computer' ? 'You Lose!' : 'It\'s a Tie!';
+    result.textContent = resultText;
     playerScoreBoard.textContent = `Player Score: ${playerScore}`;
     computerScoreBoard.textContent = `Computer Score: ${computerScore}`;
     restartBtn.style.display = 'none';
@@ -49,48 +156,22 @@ function playGame(event) {
     displayResult(winnerResult, playerChoice, computerChoice);
 
     // Check if game is over
-    moves--;
+    
     movesLeft.textContent = `Moves Remaining: ${moves}`;
+    moves--;
     if (moves <= 0) {
         gameOver();
     }
 }
 
-// Function to get computer choices
-function getComputerChoice() {
-    return COMPUTER_CHOICES[Math.floor(Math.random() * 3)];
-}
 
-// Function to decide who wins
-function determineWinner(playerChoice, computerChoice) {
-    if (playerChoice === computerChoice) {
-        return 'tie';
-    } else if (
-        (playerChoice === 'rock' && computerChoice === 'scissors') ||
-        (playerChoice === 'scissors' && computerChoice === 'paper') ||
-        (playerChoice === 'paper' && computerChoice === 'rock')
-    ) {
-        return 'player';
-    } else {
-        return 'computer';
-    }
-}
+startNewGame();
 
-// Function to update scores
-function updateScores(winnerResult) {
-    if (winnerResult === 'player') {
-        playerScore++;
-    } else if (winnerResult === 'computer') {
-        computerScore++;
-    }
-}
 
-// Function to display result
-function displayResult(winnerResult, playerChoice, computerChoice) {
-    const resultText = winnerResult === 'player' ? 'You Win!' :
-                       winnerResult === 'computer' ? 'You Lose!' :
-                       'It\'s a Tie!';
-   
-resultParagraph.textContent = `${resultText} (${playerChoice} vs ${computerChoice})`;
-}
+
+
+
+
+
+
 
