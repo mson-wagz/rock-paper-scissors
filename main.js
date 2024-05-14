@@ -28,7 +28,7 @@ function startNewGame(){
 
 //Add eventlisteners to game elements
 const gameElements = [rockGame,paperGame,scissorsGame].forEach((element) =>{
-    element.addEventListener('click', playGame);
+    element.addEventListener('click',playGame);
 
 });
 startGame.addEventListener('click', startNewGame);
@@ -39,6 +39,9 @@ function playGame(event){
     const playerChoice = event.target.innerText.toLowerCase();
     const computerChoice = getComputerChoice();
     const winnerResult = determineWinner(playerChoice,computerChoice);
+
+    const movesLeft = document.querySelector('.moves-left');
+                movesLeft.innerText = `Moves Left: ${10 - moves}`;
 
 
 //update scores and display result
@@ -55,68 +58,69 @@ if (moves >= MAX_MOVES) {
 function getComputerChoice(){
     return COMPUTER_CHOICES[Math.floor(Math.random() *3)]
 }
-//checking who wins
-winner(this.innerText, computerChoice)
+// //checking who wins
+// winner(this.innerText, getComputerChoice)
 
   
 //function to decide who wins
 function determineWinner(playerChoice,computerChoice){
-    const winner = (player,computer) =>{
+    if (playerChoice === computerChoice) {
+        return 'tie';
+      } else if (playerChoice === 'rock' && computerChoice === 'scissors') {
+        return 'player';
+      } else if (playerChoice === 'paper' && computerChoice === 'rock') {
+        return 'player';
+      } else if (playerChoice === 'scissors' && computerChoice === 'paper') {
+        return 'player';
+      } else {
+        return 'computer';
+      }
+    }
+    
+//     const winner = (player,computer) =>{
 
-    if (player === computer) {
-        result.textContent = 'Tie'
-    }
-    else if (player == 'rock') {
-        if (computer == 'paper') {
-            result.textContent = 'Computer Won';
-            computerScore++;
-            computerScoreBoard.textContent = computerScore;
+//     if (player === computer) {
+//         return 'Tie'
+//     }
+//     else if (player == 'rock') {
+//         if (computer == 'paper') {
+//             return 'Computer Won';
 
-        } else {
-            result.textContent = 'Player Won'
-            playerScore++;
-            playerScoreBoard.textContent = playerScore;
-        }
-    }
-    else if (player == 'scissors') {
-        if (computer == 'rock') {
-            result.textContent = 'Computer Won';
-            computerScore++;
-            computerScoreBoard.textContent = computerScore;
-        } else {
-            result.textContent = 'Player Won';
-            playerScore++;
-            playerScoreBoard.textContent = playerScore;
-        }
-    }
-    else if (player == 'paper') {
-        if (computer == 'scissors') {
-            result.textContent = 'Computer Won';
-            computerScore++;
-            computerScoreBoard.textContent = computerScore;
-        } else {
-            result.textContent = 'Player Won';
-            playerScore++;
-            playerScoreBoard.textContent = playerScore;
-        }
-    }
+//         } else {
+//             return 'Player Won'
+//         }
+//     }
+//     else if (player == 'scissors') {
+//         if (computer == 'rock') {
+//             return 'Computer Won';
+//         } else {
+//             return 'Player Won';
+//         }
+//     }
+//     else if (player == 'paper') {
+//         if (computer == 'scissors') {
+//             return 'Computer Won';
+//         } else {
+//             return 'Player Won';
+//         }
+//     }
       
-    }
-}
+// };
+
 // Function to update the result
-function updateResult(result) {
-    if (result === 'tie') {
-      result.textContent = 'Tie';
-    } else if (result === 'player') {
-      result.textContent = 'Player Won';
-      playerScore++;
-      playerScoreBoard.textContent = playerScore;
-    } else if (result === 'computer') {
-      result.textContent = 'Computer Won';
-      computerScore++;
-      computerScoreBoard.textContent = computerScore;
-    }
-  }
+// function updateResult(result) {
+//     if (result === 'tie') {
+//       result.textContent = 'Tie';
+//     } else if (result === 'player') {
+//       result.textContent = 'Player Won';
+//       playerScore++;
+//       playerScoreBoard.textContent = playerScore;
+//     } else if (result === 'computer') {
+//       result.textContent = 'Computer Won';
+//       computerScore++;
+//       computerScoreBoard.textContent = computerScore;
+//     }
+//   }
   
     
     // Function to update scores
@@ -128,7 +132,7 @@ function updateResult(result) {
       }
     }
 //function to display result
-function displayResult(winnerResult, playerChoice, computerChoice) {
+function displayResult(winnerResult, playerChoice) {
     const resultText = winnerResult === 'player' ? 'You Win!' : winnerResult === 'computer' ? 'You Lose!' : 'It\'s a Tie!';
     result.textContent = resultText;
     playerScoreBoard.textContent = `Player Score: ${playerScore}`;
@@ -162,6 +166,7 @@ function gameOver() {
         window.location.reload();
     });
 }
+
 
 
 
