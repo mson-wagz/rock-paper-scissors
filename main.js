@@ -9,8 +9,8 @@ const paperGame = document.getElementById("paper-el");
 const scissorsGame = document.getElementById("scissors-el");
 const movesLeft = document.querySelector('.moves-left');
 const result = document.querySelector('.turn');
-const playerScoreboard = document.querySelector('.p-count');
-const computerScoreboard = document.querySelector('.c-count');
+const playerScoreBoard = document.querySelector('.p-count');
+const computerScoreBoard = document.querySelector('.c-count');
 
 //initialize scores
     let playerScore = 0;
@@ -27,16 +27,18 @@ function startNewGame(){
     moves = 0;
 
 //Add eventlisteners to game elements
-const gameElements = [rockGame,paperGame,scissorsGame].gameElements.forEach((element) =>{
+const gameElements = [rockGame,paperGame,scissorsGame].forEach((element) =>{
     element.addEventListener('click', playGame);
+
 });
+startGame.addEventListener('click', startNewGame);
 }
 
 //function to start playing the game
 function playGame(event){
-    const playerChoice = event.target.innerText.toLowerCase;
+    const playerChoice = event.target.innerText.toLowerCase();
     const computerChoice = getComputerChoice();
-    const winnerResult = determineWinner(playerChoice)
+    const winnerResult = determineWinner(playerChoice,computerChoice);
 
 
 //update scores and display result
@@ -44,31 +46,78 @@ updateScores(winnerResult);
 displayResult(winnerResult,playerChoice,computerChoice)
 
 //check if game is over
+moves++;
 if (moves >= MAX_MOVES) {
     gameOver();
   }
 }
 //function to get computer choices
 function getComputerChoice(){
-    return COMPUTER_CHOICES[Math.floor(Math.random *3)]
+    return COMPUTER_CHOICES[Math.floor(Math.random() *3)]
 }
-        
+//checking who wins
+winner(this.innerText, computerChoice)
 
   
 //function to decide who wins
-function determineWinner(playerChoice, computerChoice){
-    if (playerChoice === computerChoice) {
-        return 'tie';
-      } else if (playerChoice === 'rock' && computerChoice === 'scissors') {
-        return 'player';
-      } else if (playerChoice === 'paper' && computerChoice === 'rock') {
-        return 'player';
-      } else if (playerChoice === 'scissors' && computerChoice === 'paper') {
-        return 'player';
-      } else {
-        return 'computer';
-      }
+function determineWinner(playerChoice,computerChoice){
+    const winner = (player,computer) =>{
+
+    if (player === computer) {
+        result.textContent = 'Tie'
     }
+    else if (player == 'rock') {
+        if (computer == 'paper') {
+            result.textContent = 'Computer Won';
+            computerScore++;
+            computerScoreBoard.textContent = computerScore;
+
+        } else {
+            result.textContent = 'Player Won'
+            playerScore++;
+            playerScoreBoard.textContent = playerScore;
+        }
+    }
+    else if (player == 'scissors') {
+        if (computer == 'rock') {
+            result.textContent = 'Computer Won';
+            computerScore++;
+            computerScoreBoard.textContent = computerScore;
+        } else {
+            result.textContent = 'Player Won';
+            playerScore++;
+            playerScoreBoard.textContent = playerScore;
+        }
+    }
+    else if (player == 'paper') {
+        if (computer == 'scissors') {
+            result.textContent = 'Computer Won';
+            computerScore++;
+            computerScoreBoard.textContent = computerScore;
+        } else {
+            result.textContent = 'Player Won';
+            playerScore++;
+            playerScoreBoard.textContent = playerScore;
+        }
+    }
+      
+    }
+}
+// Function to update the result
+function updateResult(result) {
+    if (result === 'tie') {
+      result.textContent = 'Tie';
+    } else if (result === 'player') {
+      result.textContent = 'Player Won';
+      playerScore++;
+      playerScoreBoard.textContent = playerScore;
+    } else if (result === 'computer') {
+      result.textContent = 'Computer Won';
+      computerScore++;
+      computerScoreBoard.textContent = computerScore;
+    }
+  }
+  
     
     // Function to update scores
     function updateScores(winnerResult) {
@@ -82,8 +131,8 @@ function determineWinner(playerChoice, computerChoice){
 function displayResult(winnerResult, playerChoice, computerChoice) {
     const resultText = winnerResult === 'player' ? 'You Win!' : winnerResult === 'computer' ? 'You Lose!' : 'It\'s a Tie!';
     result.textContent = resultText;
-    playerScoreboard.textContent = `Player Score: ${playerScore}`;
-    computerScoreboard.textContent = `Computer Score: ${computerScore}`;
+    playerScoreBoard.textContent = `Player Score: ${playerScore}`;
+    computerScoreBoard.textContent = `Computer Score: ${computerScore}`;
   }
 //function to run when game is over
 function gameOver() {
