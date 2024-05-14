@@ -36,6 +36,7 @@ button{
     padding:5px 30px;
     border-radius: 15px;
     font-size: 20px;
+    cursor:pointer;
 }
 h2{
     color: bisque;
